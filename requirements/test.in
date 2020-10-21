@@ -2,6 +2,7 @@
 -r base.txt
 
 coverage
+ddt
 mock
 pycodestyle
 pylint

@@ -4,7 +4,7 @@ This file contains django context_processors needed by edunext.
 """
 import logging
 
-from eco_tenant.models import SiteOptions
+from eco_tenant.models import TenantOptions
 
 LOG = logging.getLogger(__name__)
 
@@ -15,9 +15,9 @@ def theme_options(request):
     in a way that is unobtrusive and easy to migrate between releases
     """
     try:
-        options = request.site.siteoptions.options_blob
-    except SiteOptions.DoesNotExist:  # pylint: disable=no-member
-        LOG.warning("The site %s has no associated SiteOptions register.", request.site.domain)
+        options = request.site.tenantoptions.options_blob
+    except TenantOptions.DoesNotExist:  # pylint: disable=no-member
+        LOG.warning("The site %s has no associated TenantOptions register.", request.site.domain)
         options = {}
 
     try:

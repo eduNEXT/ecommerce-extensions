@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from jsonfield.fields import JSONField
 
 
-class SiteOptions(models.Model):
+class TenantOptions(models.Model):
     """
     This is where the information about the site's options are stored in the database
 
@@ -31,14 +31,14 @@ class SiteOptions(models.Model):
 
     class Meta(object):
         """
-        Meta class for SiteOptions model
+        Meta class for TenantOptions model
         """
-        verbose_name_plural = "SiteOptions"
+        verbose_name_plural = "TenantOptions"
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
-        # Clear Site cache upon SiteOptions changed
+        # Clear Site cache upon TenantOptions changed
         Site.objects.clear_cache()
-        super(SiteOptions, self).save(*args, **kwargs)
+        super(TenantOptions, self).save(*args, **kwargs)
 
 
 def clear_site_cache(sender, **kwargs):
@@ -49,4 +49,4 @@ def clear_site_cache(sender, **kwargs):
     Site.objects.clear_cache()
 
 
-pre_delete.connect(clear_site_cache, sender=SiteOptions)
+pre_delete.connect(clear_site_cache, sender=TenantOptions)

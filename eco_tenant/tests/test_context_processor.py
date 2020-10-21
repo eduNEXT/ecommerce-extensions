@@ -6,7 +6,7 @@ from django.test import RequestFactory, TestCase
 from mock import Mock
 
 from eco_tenant.context_processors import theme_options
-from eco_tenant.models import SiteOptions
+from eco_tenant.models import TenantOptions
 
 
 @ddt.ddt
@@ -43,7 +43,7 @@ class TestThemeOptions(TestCase):
         """
         Tests that theme_options returns the options dictionary into the options key
         """
-        self.request.site.siteoptions = SiteOptions(
+        self.request.site.tenantoptions = TenantOptions(
             site_id=1,
             options_blob=test_dict,
         )

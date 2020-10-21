@@ -3,21 +3,21 @@ Django admin page for custom eduNEXT models
 """
 from django.contrib import admin
 
-from eco_tenant.models import SiteOptions
+from eco_tenant.models import TenantOptions
 
 
-class SiteOptionsAdmin(admin.ModelAdmin):
+class TenantOptionsAdmin(admin.ModelAdmin):
     """
-    Admin interface for the SiteOptions object.
+    Admin interface for the TenantOptions object.
     """
     list_display = ('site', 'options_blob')
     search_fields = ('site__domain', 'options_blob')
 
     class Meta(object):
         """
-        Meta class for SiteOptions admin model
+        Meta class for TenantOptions admin model
         """
-        model = SiteOptions
+        model = TenantOptions
 
 
-admin.site.register(SiteOptions, SiteOptionsAdmin)
+admin.site.register(TenantOptions, TenantOptionsAdmin)

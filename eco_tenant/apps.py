@@ -13,4 +13,4 @@ class EcoTenantConfig(AppConfig):
     """
     name = 'eco_tenant'
     label = 'edunext'
-    verbose_name = 'Django eduNEXT e-commerce tenant app.'
+    verbose_name = 'eduNEXT tenant'

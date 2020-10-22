@@ -3,6 +3,7 @@
 
 coverage
 ddt
+jsonfield2
 mock
 pycodestyle
 pylint

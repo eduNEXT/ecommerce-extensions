@@ -2,20 +2,18 @@
 """This module contains the test for conf.py file."""
 from django.contrib.sites.models import Site
 from django.test import TestCase
-from django.test.utils import override_settings
-from mock import MagicMock, patch
 
-from ecommerce_extensions.tenant.conf import settings as SiteSettings
+from ecommerce_extensions.tenant.conf import TenantAwareSettings
 from ecommerce_extensions.tenant.models import TenantOptions
 
 
-def _make_site(blob_str=None, site_id=1):
+def _make_site(domain, blob_str=None):
     """
     Returns a site object. If blob_str is passed, a TenantOptions object
     related to the site is created or updated with the blob, otherwise,
     existent TenantOptions object for the site is deleted
     """
-    site = Site.objects.get(id=site_id)
+    site, _ = Site.objects.get_or_create(domain=domain)
 
     if blob_str is not None:
         obj, _ = TenantOptions.objects.get_or_create(
@@ -29,61 +27,79 @@ def _make_site(blob_str=None, site_id=1):
     return site
 
 
-class EdunextConfTests(TestCase):
+class TenantAwareSettingsTests(TestCase):
     """
-    Test for Edunext site aware configurations
+    Test for Edunext tenant aware configurations
     """
 
-    @override_settings(OSCAR_DEFAULT_CURRENCY="CAD")
-    @patch("ecommerce_extensions.tenant.conf.get_current_request")
-    def test_conf_without_TenantOptions(self, get_current_request_mock):
+    def test_get_site_by_domain_fail(self):
         """
-        This method tests the desired behavior when the current site has
-        no an associated TenantOptions register.
+        This method tests when a site is not found for a given domain.
 
         Expected behavior:
-            - SiteSetting returns default value.
+            - None is returned.
         """
-        request_mock = MagicMock()
-        request_mock.site = _make_site()
-        get_current_request_mock.return_value = request_mock
+        domain = "https://ilvermorny-school.com"
 
-        self.assertEqual(SiteSettings.OSCAR_DEFAULT_CURRENCY, "CAD")
+        site = TenantAwareSettings.get_site_by_domain(domain)
 
-    @override_settings(OSCAR_DEFAULT_CURRENCY="COP")
-    @patch("ecommerce_extensions.tenant.conf.get_current_request")
-    def test_conf_with_tenantoptions_no_overide(self, get_current_request_mock):
+        self.assertIsNone(site)
+
+    def test_get_site_by_domain(self):
         """
-        This method tests the desired behavior when the current site has
-        an associated TenantOptions register but the options has not been overridden.
+        This method tests when a site is found for a given domain.
 
         Expected behavior:
-            - SiteSetting returns default value.
+            -Return the right site.
         """
-        request_mock = MagicMock()
+        domain = "https://howgarts-school.com"
+        _make_site(domain)
+
+        site = TenantAwareSettings.get_site_by_domain(domain)
+
+        self.assertEqual(domain, site.domain)
+
+    def test_get_tenant_options_no_site(self):
+        """
+        This method tests when there is no a site.
+
+        Expected behavior:
+            - Return empty dict.
+        """
+        domain = "https://ilvermorny-school.com"
+
+        options = TenantAwareSettings.get_tenant_options(domain)
+
+        self.assertEqual({}, options)
+
+    def test_get_tenant_options_with_site(self):
+        """
+        This method tests when there is a site and the site has tenant options.
+
+        Expected behavior:
+            - Return dict with the option values.
+        """
         site_options = {
-            "ANY_OTHER_SETTING": "any_value"
+            "Murtlap": "Murtlaps are ugly, hairless creatures.",
+            "Billywig": "Billywigs are vivid sapphire blue Australian insects",
         }
-        request_mock.site = _make_site(site_options)
-        get_current_request_mock.return_value = request_mock
+        domain = "https://howgarts-school.com"
+        _make_site(domain, site_options)
 
-        self.assertEqual(SiteSettings.OSCAR_DEFAULT_CURRENCY, "COP")
+        options = TenantAwareSettings.get_tenant_options(domain)
 
-    @override_settings(OSCAR_DEFAULT_CURRENCY="USD")
-    @patch("ecommerce_extensions.tenant.conf.get_current_request")
-    def test_conf_with_tenantoptions_overide(self, get_current_request_mock):
+        self.assertEqual(site_options, options)
+
+    def test_get_tenant_options_without_optiosn(self):
         """
-        This method tests the desired behavior when the current site has
-        an associated TenantOptions register and the option has been overridden.
+        This method tests when there is a site but the site has no tenantoptions.
 
         Expected behavior:
-            - SiteSetting returns default value.
+            - Return empty dict.
         """
-        request_mock = MagicMock()
-        site_options = {
-            "OSCAR_DEFAULT_CURRENCY": "BRL"
-        }
-        request_mock.site = _make_site(site_options)
-        get_current_request_mock.return_value = request_mock
+        domain = "https://howgarts-school.com"
+        _make_site(domain)
 
-        self.assertEqual(SiteSettings.OSCAR_DEFAULT_CURRENCY, "BRL")
+        options = TenantAwareSettings.get_tenant_options(domain)
+
+        self.assertEqual({}, options)

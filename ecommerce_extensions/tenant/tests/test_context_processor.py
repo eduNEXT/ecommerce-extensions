@@ -3,9 +3,10 @@ Test file for theme options.
 """
 import ddt
 from django.test import RequestFactory, TestCase
-from ecommerce_extensions.tenant.context_processors import theme_options
-from ecommerce_extensions.tenant.models import SiteOptions
 from mock import Mock
+
+from ecommerce_extensions.tenant.context_processors import theme_options
+from ecommerce_extensions.tenant.models import TenantOptions
 
 
 @ddt.ddt
@@ -42,7 +43,7 @@ class TestThemeOptions(TestCase):
         """
         Tests that theme_options returns the options dictionary into the options key
         """
-        self.request.site.siteoptions = SiteOptions(
+        self.request.site.tenantoptions = TenantOptions(
             site_id=1,
             options_blob=test_dict,
         )

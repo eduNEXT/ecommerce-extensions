@@ -3,22 +3,23 @@ Test file for SiteOptions model.
 """
 from django.contrib.sites.models import Site
 from django.test import TestCase
-from ecommerce_extensions.tenant.models import SiteOptions, clear_site_cache
 from mock import patch
+
+from ecommerce_extensions.tenant.models import TenantOptions, clear_site_cache
 
 
 def _make_site_options(blob_str, site_id=1):
     site, _ = Site.objects.get_or_create(id=site_id)
 
-    return SiteOptions(
+    return TenantOptions(
         site=site,
         options_blob=blob_str,
     )
 
 
-class SiteOptionsTests(TestCase):
+class TenantOptionsTests(TestCase):
     """
-    Test class for SiteOptions Model.
+    Test class for TenantOptions Model.
     """
     def test_options_blob_validation_success(self):
         """
@@ -35,6 +36,6 @@ class SiteOptionsTests(TestCase):
         Expected behavior:
             - Site.objects.clear_cache() is called
         """
-        clear_site_cache("SiteOptions")
+        clear_site_cache("TenantOptions")
 
         objects_mock.clear_cache.called_once()

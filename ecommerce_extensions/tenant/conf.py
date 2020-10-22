@@ -14,7 +14,7 @@ import logging
 from django.conf import settings as base_settings
 from threadlocals.threadlocals import get_current_request
 
-from ecommerce_extensions.tenant.models import SiteOptions
+from ecommerce_extensions.tenant.models import TenantOptions
 
 LOG = logging.getLogger(__name__)
 
@@ -32,9 +32,9 @@ class SiteAwareSettings(object):
         """
         site = get_current_request().site
         try:
-            options = site.siteoptions.options_blob
-        except SiteOptions.DoesNotExist:  # pylint: disable=no-member
-            LOG.warning("The site %s has no associated SiteOptions register.", site.domain)
+            options = site.tenantoptions.options_blob
+        except TenantOptions.DoesNotExist:  # pylint: disable=no-member
+            LOG.warning("The site %s has no associated TenantOptions register.", site.domain)
             options = {}
 
         return options

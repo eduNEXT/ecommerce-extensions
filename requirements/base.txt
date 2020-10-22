@@ -4,10 +4,8 @@
 #
 #    make upgrade
 #
---index-url http://edx.devstack.devpi:3141/root/pypi/+simple/
---extra-index-url https://pypi.python.org/simple
---trusted-host edx.devstack.devpi
-
-django==2.2.16            # via -c requirements/constraints.txt, -r requirements/base.in
+django-threadlocals==0.10  # via -r requirements/base.in
+django==2.2.16            # via -c requirements/constraints.txt, -r requirements/base.in, jsonfield2
+jsonfield2==3.0.3 ; python_version >= "3.5"  # via -c requirements/constraints.txt, -r requirements/base.in
 pytz==2020.1              # via django
 sqlparse==0.3.1           # via -c requirements/constraints.txt, django

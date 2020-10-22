@@ -1,1 +1,2 @@
-django==2.2.16            # via -c requirements/constraints.txt, -r requirements/base.txt
+django==2.2.16            # via -c requirements/constraints.txt, -r requirements/base.txt, jsonfield2
+jsonfield2==3.0.3 ; python_version >= "3.5"  # via -c requirements/constraints.txt, -r requirements/base.txt

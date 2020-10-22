@@ -2,6 +2,5 @@
 -c constraints.txt
 
 Django
-django-threadlocals
 jsonfield2 ; python_version >= "3.5"
 jsonfield ; python_version == "2.7"

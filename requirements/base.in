@@ -2,5 +2,3 @@
 -c constraints.txt
 
 Django
-jsonfield2 ; python_version >= "3.5"
-jsonfield ; python_version == "2.7"

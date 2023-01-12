@@ -9,7 +9,7 @@
 {% load enterprise %}
 
 {% block content %}
-    {% if msg == "PENDING" %}
+    {% if msg == "PENDING" or msg == "Frozen" %}
         <div class="receipt container content-container">
             <h2 class="thank-you">{% trans "Awaiting confirmation of payment." as tmsg %}{{ tmsg | force_escape }}</h2>
             <div class="confirm-message">

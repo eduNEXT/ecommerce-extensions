@@ -20,6 +20,13 @@ class EcommerceExtensionsConfig(AppConfig):
     """
     name = 'ecommerce_extensions'
     verbose_name = 'Django eduNEXT ecommerce-extensions app.'
+    plugin_app = {
+        'url_config': {
+            'ecommerce': {
+                'namespace': 'ecommerce-extensions',
+            }
+        },
+    }
 
     def ready(self):
         """

@@ -87,6 +87,11 @@ setup(
     packages=[
         'ecommerce_extensions',
     ],
+    entry_points={
+        'ecommerce': [
+            'ecommerce_extensions = ecommerce_extensions.apps:EcommerceExtensionsConfig',
+        ],
+    },
     include_package_data=True,
     install_requires=load_requirements('requirements/base.in'),
     extras_require={

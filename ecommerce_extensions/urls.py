@@ -7,9 +7,9 @@ from django.urls import include, path
 from ecommerce_extensions.payment import urls
 
 urlpatterns = [
-    path("payu/", include((urls.PAYU_URLS, "ecommerce_extensions"), namespace="payu")),
-    path("wechat/", include((urls.FOMOPAY_URLS, "ecommerce_extensions"), namespace='fomopay')),
-    path("edupay/", include((urls.EDUPAY_URLS, "ecommerce_extensions"), namespace="edupay")),
+    path("payment/payu/", include((urls.PAYU_URLS, "ecommerce_extensions"), namespace="payu")),
+    path("payment/wechat/", include((urls.FOMOPAY_URLS, "ecommerce_extensions"), namespace='fomopay')),
+    path("payment/edupay/", include((urls.EDUPAY_URLS, "ecommerce_extensions"), namespace="edupay")),
 ]
 
 if getattr(settings, 'TESTING', False):

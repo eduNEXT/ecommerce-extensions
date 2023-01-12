@@ -15,8 +15,7 @@ from hashlib import sha256
 from crum import get_current_request
 from django.conf import settings
 from django.urls import reverse
-from django.utils.decorators import classproperty
-from django.utils.functional import cached_property
+from django.utils.functional import cached_property, classproperty
 from oscar.apps.payment.exceptions import GatewayError, TransactionDeclined
 from oscar.core.loading import get_model
 
@@ -148,6 +147,14 @@ class EdnxPaymentProcessor(BasePaymentProcessor):
         """Return the PAYMENT_PROCESSOR_NAME value or the DEFAULT_NAME.
 
         This is required since this allow to change the processor name per instance.
+        """
+        return getattr(settings, 'EDNX_PAYMENT_PROCESSOR_CONFIG', {}).get('PAYMENT_PROCESSOR_NAME', DEFAULT_NAME)
+
+    @classproperty
+    def TITLE(cls):  # pylint: disable=no-self-argument
+        """Return the PAYMENT_PROCESSOR_NAME value or the DEFAULT_NAME.
+
+        This field is used in the template yo populate the checkout button.
         """
         return getattr(settings, 'EDNX_PAYMENT_PROCESSOR_CONFIG', {}).get('PAYMENT_PROCESSOR_NAME', DEFAULT_NAME)
 
